@@ -1,0 +1,2189 @@
+/* ==========================================================================
+   PoolPulse Cape Town - Modern Public Swimming Pools Web App
+   Design System & Styling
+   - Premium modern South African summer feel
+   - White background, Ocean Blue primary (#0066cc), Subtle Aqua (#00c4cc)
+   - Rounded cards (16px-20px), minimal shadows, NO gradients, crisp typography
+   - Clear color indicators: Green (Open), Red (Closed), Orange (Busy/Maint), Blue (Info)
+   ========================================================================== */
+
+:root {
+  /* Core Color Palette - NO GRADIENTS */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --bg-card: #ffffff;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  
+  --primary-blue: #0066cc;
+  --primary-blue-hover: #0052a3;
+  --primary-blue-light: #eff6ff;
+  --primary-blue-border: #bfdbfe;
+  
+  --accent-aqua: #00c4cc;
+  --accent-aqua-dark: #0891b2;
+  --accent-aqua-light: #ecfeff;
+  --accent-aqua-border: #a5f3fc;
+  
+  /* Status Colors */
+  --status-open-green: #10b981;
+  --status-open-bg: #ecfdf5;
+  --status-open-border: #a7f3d0;
+  --status-open-text: #065f46;
+  
+  --status-closed-red: #ef4444;
+  --status-closed-bg: #fef2f2;
+  --status-closed-border: #fecaca;
+  --status-closed-text: #991b1b;
+  
+  --status-busy-orange: #f59e0b;
+  --status-busy-bg: #fffbeb;
+  --status-busy-border: #fde68a;
+  --status-busy-text: #92400e;
+  
+  --status-info-blue: #0284c7;
+  --status-info-bg: #f0f9ff;
+  --status-info-border: #bae6fd;
+  --status-info-text: #0369a1;
+  
+  /* Borders & Dividers */
+  --border-light: #e2e8f0;
+  --border-subtle: #edf2f7;
+  
+  /* Shadows - Minimal and soft */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 2px 8px 0 rgba(15, 23, 42, 0.06), 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  --shadow-hover: 0 8px 20px 0 rgba(15, 23, 42, 0.08);
+  --shadow-modal: 0 12px 30px -4px rgba(15, 23, 42, 0.15);
+  
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background-color: #f1f5f9;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Desktop Presentation Wrapper */
+.desktop-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 16px;
+  background-color: #e2e8f0;
+}
+
+/* Desktop Top Control Bar */
+.desktop-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 900px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  background: #ffffff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-badge .logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand-badge .cct-header-badge {
+  width: auto;
+  min-width: 60px;
+  height: 34px;
+  padding: 3px 8px;
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+}
+
+.desktop-cct-logo {
+  height: 22px;
+  width: auto;
+  display: block;
+}
+
+.brand-badge .brand-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--primary-blue);
+  letter-spacing: -0.3px;
+}
+
+.brand-badge .brand-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.desktop-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.desktop-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.desktop-btn:hover {
+  background: #e2e8f0;
+  color: var(--text-primary);
+}
+
+.desktop-btn.active {
+  background: var(--primary-blue);
+  color: #ffffff;
+  border-color: var(--primary-blue);
+}
+
+/* Smartphone Device Mockup Frame */
+.device-frame {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  height: 880px;
+  background-color: #000000;
+  border-radius: 46px;
+  padding: 12px;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35), 0 0 0 1px #cbd5e1;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* Fullscreen mode toggle */
+.device-frame.full-screen-mode {
+  max-width: 520px;
+  height: 94vh;
+  border-radius: 20px;
+  padding: 0;
+  box-shadow: var(--shadow-modal);
+}
+
+.device-frame.full-screen-mode .phone-notch,
+.device-frame.full-screen-mode .home-indicator-bar {
+  display: none;
+}
+
+/* Phone Screen Inner Container */
+.phone-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-primary);
+  border-radius: 36px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.device-frame.full-screen-mode .phone-screen {
+  border-radius: 20px;
+}
+
+/* iOS Status Bar */
+.ios-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px 6px;
+  background-color: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  z-index: 100;
+  user-select: none;
+}
+
+.ios-status-bar.on-hero {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.dynamic-island {
+  width: 110px;
+  height: 26px;
+  background-color: #000000;
+  border-radius: var(--radius-full);
+}
+
+.status-bar-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Home Indicator Bar */
+.home-indicator-bar {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 134px;
+  height: 5px;
+  background-color: #0f172a;
+  opacity: 0.3;
+  border-radius: 10px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+/* App Viewport / Main Container */
+.app-viewport {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: calc(100% - 44px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+}
+
+/* Screen Views */
+.screen-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  background-color: var(--bg-secondary);
+  padding-bottom: 80px; /* Space for bottom nav */
+}
+
+.screen-view.active {
+  display: flex;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* App Header (Top bar with location & weather) */
+.app-top-bar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 12px;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  z-index: 50;
+}
+
+.location-picker-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+}
+
+.location-picker-btn:hover {
+  background-color: var(--bg-secondary);
+}
+
+.location-picker-btn .pin-icon {
+  color: var(--primary-blue);
+}
+
+.location-picker-btn .arrow-down {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.live-weather-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  color: #b45309;
+  cursor: pointer;
+}
+
+.live-weather-badge svg {
+  color: #f59e0b;
+}
+
+/* Compact Maintenance Alert Banner */
+.maintenance-alert-banner {
+  margin: 12px 16px 4px;
+  background-color: #fffbeb;
+  border: 1px solid var(--status-busy-border);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.maintenance-alert-banner:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.alert-banner-icon {
+  color: var(--status-busy-orange);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.alert-banner-content {
+  flex: 1;
+}
+
+.alert-banner-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--status-busy-text);
+  margin-bottom: 2px;
+}
+
+.alert-banner-text {
+  font-size: 12px;
+  color: #78350f;
+  line-height: 1.35;
+}
+
+.alert-banner-link {
+  display: inline-block;
+  font-weight: 700;
+  text-decoration: underline;
+  margin-top: 2px;
+  color: var(--primary-blue);
+}
+
+/* Search Bar */
+.search-bar-container {
+  padding: 12px 16px 8px;
+  background-color: var(--bg-primary);
+}
+
+.search-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 0 14px;
+  height: 44px;
+  transition: border-color 0.15s ease;
+}
+
+.search-input-box:focus-within {
+  border-color: var(--primary-blue);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px var(--primary-blue-light);
+}
+
+.search-input-box .search-icon {
+  color: var(--text-muted);
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--text-primary);
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: var(--text-light);
+}
+
+.clear-search-btn {
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  display: none;
+  padding: 4px;
+}
+
+.clear-search-btn.visible {
+  display: flex;
+}
+
+/* Filter Pills Bar */
+.filter-pills-bar {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px 14px;
+  background-color: var(--bg-primary);
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.filter-pills-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.filter-chip:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.filter-chip.active {
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  border-color: var(--primary-blue);
+}
+
+.filter-chip .chip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+.filter-chip .chip-dot.green {
+  background-color: var(--status-open-green);
+}
+
+.filter-chip .chip-dot.orange {
+  background-color: var(--status-busy-orange);
+}
+
+/* Home Section Header */
+.home-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 10px;
+}
+
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.2px;
+}
+
+.section-count-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary-blue);
+  background-color: var(--primary-blue-light);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+/* Swimming Pool Cards List */
+.pools-list {
+  padding: 0 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Swimming Pool Card */
+.pool-card {
+  background-color: var(--bg-card);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  position: relative;
+}
+
+.pool-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  border-color: #cbd5e1;
+}
+
+.pool-card:active {
+  transform: scale(0.99);
+}
+
+.pool-card-media {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  background-color: #e2e8f0;
+  overflow: hidden;
+}
+
+.pool-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pool-card-favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.92);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, color 0.15s ease;
+  z-index: 5;
+}
+
+.pool-card-favorite-btn:hover {
+  transform: scale(1.1);
+  color: var(--status-closed-red);
+}
+
+.pool-card-favorite-btn.saved {
+  color: #e11d48;
+}
+
+.pool-card-distance-tag {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: rgba(15, 23, 42, 0.8);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+.pool-card-distance-tag svg {
+  color: var(--accent-aqua);
+}
+
+.pool-type-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Pool Card Body */
+.pool-card-body {
+  padding: 12px 14px 14px;
+}
+
+.pool-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.pool-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.pool-card-chevron {
+  color: var(--text-light);
+  margin-left: 8px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pool-card-suburb {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Indicators Row */
+.pool-card-indicators {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* Clear Status Badges */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -0.1px;
+}
+
+.status-pill.green {
+  background-color: var(--status-open-bg);
+  border: 1px solid var(--status-open-border);
+  color: var(--status-open-text);
+}
+
+.status-pill.red {
+  background-color: var(--status-closed-bg);
+  border: 1px solid var(--status-closed-border);
+  color: var(--status-closed-text);
+}
+
+.status-pill.orange {
+  background-color: var(--status-busy-bg);
+  border: 1px solid var(--status-busy-border);
+  color: var(--status-busy-text);
+}
+
+.status-pill.blue {
+  background-color: var(--status-info-bg);
+  border: 1px solid var(--status-info-border);
+  color: var(--status-info-text);
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+/* Crowd Level Badge */
+.crowd-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.crowd-pill svg {
+  color: var(--primary-blue);
+}
+
+/* Closing Time Pill */
+.closing-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+/* Quick Verdict Strip on Card */
+.pool-card-verdict {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 12px;
+}
+
+.verdict-tag {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.verdict-tag.yes {
+  color: var(--status-open-text);
+}
+
+.verdict-tag.no {
+  color: var(--status-closed-text);
+}
+
+.pool-card-action-text {
+  font-weight: 600;
+  color: var(--primary-blue);
+  font-size: 12px;
+}
+
+/* ==========================================================================
+   Pool Details Screen
+   ========================================================================== */
+.pool-details-view {
+  background-color: var(--bg-primary);
+  padding-bottom: 90px;
+}
+
+.details-hero {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  background-color: #0f172a;
+}
+
+.details-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details-nav-overlay {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 10;
+}
+
+.nav-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-primary);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease;
+}
+
+.nav-icon-btn:hover {
+  transform: scale(1.08);
+}
+
+.nav-right-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Details Content Body (rounded card overlap) */
+.details-content-body {
+  position: relative;
+  margin-top: -24px;
+  background-color: var(--bg-primary);
+  border-top-left-radius: 28px;
+  border-top-right-radius: 28px;
+  padding: 20px 16px 24px;
+  box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
+}
+
+.details-header-info {
+  margin-bottom: 16px;
+}
+
+.details-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.details-pool-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.details-distance-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--primary-blue);
+  background-color: var(--primary-blue-light);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.details-suburb-address {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+/* Status & Crowd Grid Cards */
+.details-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.stat-box {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+}
+
+.stat-box.open-box {
+  background-color: var(--status-open-bg);
+  border-color: var(--status-open-border);
+}
+
+.stat-box.closed-box {
+  background-color: var(--status-closed-bg);
+  border-color: var(--status-closed-border);
+}
+
+.stat-box-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.stat-box.open-box .stat-box-label {
+  color: var(--status-open-text);
+}
+
+.stat-box.closed-box .stat-box-label {
+  color: var(--status-closed-text);
+}
+
+.stat-box-sub {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Crowd Capacity Bar */
+.crowd-meter-container {
+  margin-top: 6px;
+}
+
+.crowd-meter-track {
+  width: 100%;
+  height: 6px;
+  background-color: var(--border-light);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.crowd-meter-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background-color: var(--primary-blue);
+  transition: width 0.3s ease;
+}
+
+.crowd-meter-fill.low {
+  background-color: var(--status-open-green);
+}
+
+.crowd-meter-fill.moderate {
+  background-color: var(--primary-blue);
+}
+
+.crowd-meter-fill.busy {
+  background-color: var(--status-busy-orange);
+}
+
+.crowd-meter-fill.full {
+  background-color: var(--status-closed-red);
+}
+
+/* "Should You Go?" Decision Card - App Signature Feature */
+.decision-card {
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  border: 1px solid;
+}
+
+.decision-card.verdict-yes {
+  background-color: var(--status-open-bg);
+  border-color: var(--status-open-border);
+}
+
+.decision-card.verdict-no {
+  background-color: var(--status-closed-bg);
+  border-color: var(--status-closed-border);
+}
+
+.decision-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.decision-badge {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+}
+
+.decision-card.verdict-yes .decision-badge {
+  background-color: var(--status-open-green);
+  color: #ffffff;
+}
+
+.decision-card.verdict-no .decision-badge {
+  background-color: var(--status-closed-red);
+  color: #ffffff;
+}
+
+.decision-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.decision-reason {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Details Section Card */
+.details-section-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.section-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.section-card-icon {
+  color: var(--primary-blue);
+  flex-shrink: 0;
+}
+
+.section-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.hours-schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hours-item {
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.hours-item:last-child {
+  border-bottom: none;
+}
+
+.hours-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.hours-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.hours-notice {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--status-busy-text);
+  background: var(--status-busy-bg);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--status-busy-border);
+}
+
+/* Weather At Pool Breakdown */
+.weather-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.weather-metric-item {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.weather-metric-title {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+}
+
+.weather-metric-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Maintenance Card */
+.maintenance-info-box {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.maintenance-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.maintenance-status-badge.clean {
+  background-color: var(--status-open-bg);
+  color: var(--status-open-text);
+}
+
+.maintenance-status-badge.warning {
+  background-color: var(--status-closed-bg);
+  color: var(--status-closed-text);
+}
+
+/* Amenities List */
+.amenities-tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.amenity-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Contact Details Card */
+.contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.contact-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.contact-number {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.quick-call-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Details Action Buttons (Two large buttons) */
+.details-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0 14px;
+}
+
+.btn-primary-blue {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 50px;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-primary-blue:hover {
+  background-color: var(--primary-blue-hover);
+}
+
+.btn-primary-blue:active {
+  transform: scale(0.99);
+}
+
+.btn-secondary-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  background-color: var(--bg-secondary);
+  color: var(--primary-blue);
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid var(--primary-blue-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-secondary-action:hover {
+  background-color: var(--primary-blue-light);
+}
+
+.timestamp-footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 12px;
+  padding: 0 10px;
+}
+
+/* ==========================================================================
+   Map Screen
+   ========================================================================== */
+.map-view-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-top-controls {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.map-control-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 4px 6px 4px 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.map-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.map-style-toggle {
+  display: flex;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-full);
+  padding: 2px;
+}
+
+.map-toggle-btn {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.map-toggle-btn.active {
+  background-color: #ffffff;
+  color: var(--primary-blue);
+  box-shadow: var(--shadow-sm);
+}
+
+.leaflet-map-element {
+  width: 100%;
+  height: 100%;
+  background-color: #e5e7eb;
+}
+
+/* Custom Leaflet Map Pins */
+.custom-map-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.custom-map-pin:hover {
+  transform: rotate(-45deg) scale(1.15);
+}
+
+.custom-map-pin.green {
+  background-color: var(--status-open-green);
+}
+
+.custom-map-pin.red {
+  background-color: var(--status-closed-red);
+}
+
+.custom-map-pin.orange {
+  background-color: var(--status-busy-orange);
+}
+
+.custom-map-pin.user {
+  background-color: var(--primary-blue);
+  border-radius: 50%;
+  transform: none;
+}
+
+.custom-map-pin-inner {
+  transform: rotate(45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+
+/* Map Floating Pool Preview Card */
+.map-bottom-card {
+  position: absolute;
+  bottom: 80px; /* Above bottom nav */
+  left: 12px;
+  right: 12px;
+  background-color: #ffffff;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-modal);
+  padding: 12px;
+  z-index: 1000;
+  display: none;
+  animation: slideUp 0.2s ease-out;
+}
+
+.map-bottom-card.visible {
+  display: block;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.map-card-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+}
+
+.map-card-flex {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.map-card-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.map-card-info {
+  flex: 1;
+}
+
+.map-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+
+.map-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.map-card-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.map-card-btn-directions {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+}
+
+.map-card-btn-details {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Directions & Route Navigation Screen (Mockup Screen 4)
+   ========================================================================== */
+.directions-screen-view {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  z-index: 100;
+  flex-direction: column;
+}
+
+.directions-screen-view.active {
+  display: flex;
+}
+
+.directions-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.directions-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--primary-blue);
+  cursor: pointer;
+}
+
+.directions-map-container {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  background-color: #e2e8f0;
+}
+
+#routeMapElement {
+  width: 100%;
+  height: 100%;
+}
+
+.directions-bottom-sheet {
+  background-color: #ffffff;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  padding: 16px;
+  box-shadow: 0 -8px 24px rgba(15, 23, 42, 0.12);
+  border-top: 1px solid var(--border-light);
+}
+
+.route-pool-summary {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.route-pool-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.route-pool-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.route-pool-address {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.start-navigation-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.route-info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.route-info-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.route-info-left svg {
+  color: var(--primary-blue);
+}
+
+/* ==========================================================================
+   Alerts & Official Maintenance Tab
+   ========================================================================== */
+.alerts-tab-content {
+  padding: 16px;
+}
+
+.official-notice-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.notice-department-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--primary-blue);
+  background-color: var(--primary-blue-light);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+}
+
+.notice-headline {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.notice-intro {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.phased-schedule-box {
+  background-color: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  border-left: 3px solid var(--primary-blue);
+  margin-bottom: 12px;
+}
+
+.phased-box-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-blue);
+  margin-bottom: 4px;
+}
+
+.phased-box-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.maintenance-category-group {
+  margin-bottom: 18px;
+}
+
+.category-group-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.category-group-header.major {
+  color: var(--status-closed-text);
+}
+
+.category-group-header.unplanned {
+  color: var(--status-busy-text);
+}
+
+.closed-pool-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.closed-pool-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.closed-pool-note {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.closed-pool-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   Favourites Tab
+   ========================================================================== */
+.favourites-tab-content {
+  padding: 16px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 20px;
+}
+
+.empty-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  margin-bottom: 14px;
+}
+
+.empty-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.empty-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  max-width: 260px;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+/* ==========================================================================
+   Splash / Onboarding Screen (Mockup Screen 1)
+   ========================================================================== */
+.splash-onboarding-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  background-color: #0f172a;
+  overflow: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.splash-onboarding-modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.splash-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 20px 32px;
+}
+
+.splash-top-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  padding: 20px 24px;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  margin-top: 10px;
+}
+
+.splash-logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 18px;
+  background: #ffffff;
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 12px;
+}
+
+.splash-cct-logo {
+  height: 48px;
+  width: auto;
+  max-width: 180px;
+  display: block;
+}
+
+.splash-brand-name {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--primary-blue);
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+.splash-brand-sub {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+
+.splash-tagline {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent-aqua-dark);
+  margin-top: 6px;
+}
+
+.splash-center-text {
+  text-align: center;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.splash-script-callout {
+  font-size: 32px;
+  font-weight: 800;
+  font-family: inherit;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.splash-sub-desc {
+  font-size: 14px;
+  font-weight: 500;
+  opacity: 0.95;
+}
+
+.splash-bottom-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.splash-start-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 52px;
+  background-color: var(--primary-blue);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4);
+}
+
+.splash-weather-pill {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  padding: 10px 16px;
+  border-radius: var(--radius-lg);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.splash-weather-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.splash-weather-left svg {
+  color: #f59e0b;
+}
+
+/* ==========================================================================
+   Bottom Navigation Bar
+   ========================================================================== */
+.app-bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: #ffffff;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 100;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.nav-item-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  height: 100%;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.15s ease;
+}
+
+.nav-item-btn:hover {
+  color: var(--text-primary);
+}
+
+.nav-item-btn.active {
+  color: var(--primary-blue);
+}
+
+.nav-item-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-item-label {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.nav-badge-count {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background-color: var(--status-closed-red);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: var(--radius-full);
+}
+
+/* Admission Tariffs Breakdown Grid */
+.tariffs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.tariff-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tariff-card.free {
+  background: var(--status-open-bg);
+  border-color: var(--status-open-border);
+}
+
+.tariff-user-type {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.tariff-price {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--primary-blue);
+  line-height: 1.2;
+}
+
+.tariff-card.free .tariff-price {
+  color: var(--status-open-green);
+}
+
+.tariff-subtext {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.tariff-payment-notice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  background: var(--primary-blue-light);
+  color: var(--primary-blue);
+  border: 1px solid var(--primary-blue-border);
+  margin-top: 8px;
+}
+
+.tariff-payment-notice.cashless {
+  background: #fdf2f8;
+  color: #be185d;
+  border-color: #fbcfe8;
+}
+
+.tariff-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.tariff-closed-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--status-closed-bg);
+  border: 1px solid var(--status-closed-border);
+  color: var(--status-closed-text);
+}
+
+.pool-card-price-row {
+  margin: 6px 0 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.pool-card-price-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-blue);
+  background: var(--primary-blue-light);
+  border: 1px solid var(--primary-blue-border);
+  padding: 3px 8px;
+  border-radius: 12px;
+  line-height: 1.2;
+}
+
+/* Responsive Rules */
+@media (max-width: 600px) {
+  .desktop-preview-container {
+    padding: 0;
+    background: transparent;
+  }
+  
+  .desktop-header-bar {
+    display: none;
+  }
+  
+  .device-frame {
+    max-width: 100%;
+    height: 100vh;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+  }
+  
+  .phone-screen {
+    border-radius: 0;
+  }
+  
+  .dynamic-island {
+    display: none;
+  }
+  
+  .home-indicator-bar {
+    display: none;
+  }
+}

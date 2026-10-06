@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>City of Cape Town Pools - Municipal Swimming Facilities & Real-Time Status</title>
+  <meta name="description" content="Find Cape Town public swimming pools, real-time open status, live crowd capacity, maintenance notices, operating hours, and directions for summer family swimming.">
+  <meta name="theme-color" content="#0b3b66">
+  
+  <!-- Preconnect to fonts and live weather API -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.open-meteo.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/vendor/leaflet.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/modern.css">
+</head>
+<body>
+
+  <!-- Desktop Presentation Environment -->
+  <div class="desktop-preview-container">
+    <div class="backdrop-orb orb-1" aria-hidden="true"></div>
+    <div class="backdrop-orb orb-2" aria-hidden="true"></div>
+    <div class="backdrop-orb orb-3" aria-hidden="true"></div>
+
+    <!-- App Container -->
+    <main class="device-frame" id="deviceFrame">
+      <div class="phone-screen">
+
+        <!-- App Viewport Container -->
+        <div class="app-viewport">
+          
+          <!-- ========================================================
+               1. Splash / Onboarding Modal Screen (Mockup Screen 1)
+               ======================================================== -->
+          <section class="splash-onboarding-modal" id="splashModal">
+            <img src="assets/images/splash_bg.jpg" alt="Cape Town summer pool" class="splash-bg-image" />
+            
+            <div class="splash-overlay">
+              <div class="splash-top-brand">
+                <div class="splash-logo-container">
+                  <img src="assets/images/city_of_cape_town_logo.svg" alt="City of Cape Town" class="splash-cct-logo" />
+                </div>
+                <h1 class="splash-brand-name">City of Cape Town Pools</h1>
+                <div class="splash-brand-sub">Official Municipal Swimming Facilities</div>
+                <div class="splash-tagline">Real-Time Info • Operating Schedules • Admission Tariffs</div>
+              </div>
+
+              <div class="splash-center-text">
+                <div class="splash-script-callout">Find a Pool Near You</div>
+                <div class="splash-sub-desc">Know before you go. Real-time crowd levels, open hours & seasonal maintenance.</div>
+              </div>
+
+              <div class="splash-bottom-actions">
+                <button class="splash-start-btn" id="splashStartBtn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <span>Find Nearby Pools</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </button>
+
+                <div class="splash-weather-pill" id="splashWeatherPill">
+                  <div class="splash-weather-left">
+                    <span id="splashWeatherIcon" class="splash-weather-icon"></span>
+                    <span>Now in Cape Town • <strong id="splashWeatherText">Loading live weather…</strong></span>
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ========================================================
+               2. Home Screen View (Mockup Screen 2)
+               ======================================================== -->
+          <div class="screen-view active" id="homeScreen">
+            
+            <!-- Top App Bar -->
+            <header class="app-top-bar">
+              <button class="location-picker-btn" id="locationPickerBtn" title="Current Area">
+                <span class="pin-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </span>
+                <span>Cape Town</span>
+                <span class="arrow-down">▼</span>
+              </button>
+
+              <button class="live-weather-badge" id="homeWeatherBadge" title="Refresh live Cape Town weather" type="button">
+                <span id="homeWeatherIcon" class="badge-wx-icon"></span>
+                <span id="homeWeatherTemp">--°</span>
+              </button>
+            </header>
+
+            <!-- Live Weather Hero (Open-Meteo) -->
+            <section class="weather-hero is-loading" id="weatherHero" aria-live="polite" aria-label="Live Cape Town weather">
+              <div class="wh-top">
+                <div class="wh-main">
+                  <div class="wh-label"><span class="live-dot"></span>Live · Cape Town</div>
+                  <div class="wh-temp-row">
+                    <span class="wh-temp" id="whTemp">--°</span>
+                    <div class="wh-cond-wrap">
+                      <div class="wh-cond" id="whCond">Loading live weather…</div>
+                      <div class="wh-feels" id="whFeels">&nbsp;</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="wh-icon" id="whIcon"></div>
+              </div>
+              <div class="wh-stats" id="whStats">
+                <div class="wh-stat skeleton"></div><div class="wh-stat skeleton"></div><div class="wh-stat skeleton"></div><div class="wh-stat skeleton"></div>
+              </div>
+              <div class="wh-hourly" id="whHourly"></div>
+              <div class="wh-verdict" id="whVerdict"></div>
+              <div class="wh-footer" id="whFooter"></div>
+            </section>
+
+            <!-- Compact Maintenance Alert Banner -->
+            <div class="maintenance-alert-banner" id="maintenanceBanner" role="alert">
+              <div class="alert-banner-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+              </div>
+              <div class="alert-banner-content">
+                <div class="alert-banner-title">Seasonal Maintenance Notice</div>
+                <div class="alert-banner-text">5 pools closed for major upgrades (Westridge, Bellville, Athlone, Mnandi, Vulindlela). Check status before travel.</div>
+                <span class="alert-banner-link">View schedule updates →</span>
+              </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-bar-container">
+              <div class="search-input-box">
+                <div class="search-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                  </svg>
+                </div>
+                <input 
+                  type="text" 
+                  id="searchInput" 
+                  class="search-input" 
+                  placeholder="Search for a swimming pool or area..." 
+                  autocomplete="off"
+                />
+                <button class="clear-search-btn" id="clearSearchBtn" title="Clear search">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Filter Pills Bar -->
+            <nav class="filter-pills-bar" aria-label="Filter swimming pools">
+              <button class="filter-chip active" data-filter="all">All</button>
+              <button class="filter-chip" data-filter="open">
+                <span class="chip-dot green"></span>
+                <span>Open Now</span>
+              </button>
+              <button class="filter-chip" data-filter="not-busy">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                <span>Not Busy</span>
+              </button>
+              <button class="filter-chip" data-filter="indoor">
+                <span>🏠 Indoor</span>
+              </button>
+              <button class="filter-chip" data-filter="outdoor">
+                <span>☀️ Outdoor</span>
+              </button>
+              <button class="filter-chip" data-filter="maintenance">
+                <span class="chip-dot orange"></span>
+                <span>Under Maintenance</span>
+              </button>
+              <button class="filter-chip" data-filter="saved">
+                <span>❤️ Saved</span>
+              </button>
+            </nav>
+
+            <!-- Section Header -->
+            <div class="home-section-header">
+              <h2 class="section-title">Pools near you</h2>
+              <span class="section-count-badge" id="poolsCountBadge">12 pools</span>
+            </div>
+
+            <!-- Pools Cards List Container -->
+            <div class="pools-list" id="poolsListContainer">
+              <!-- Dynamically populated by app.js -->
+            </div>
+
+          </div>
+
+          <!-- ========================================================
+               3. Map Screen View (Interactive Leaflet Map)
+               ======================================================== -->
+          <div class="screen-view" id="mapScreen">
+            <div class="map-view-container">
+              
+              <!-- Floating Top Map Controls -->
+              <div class="map-top-controls">
+                <div class="map-control-bar">
+                  <div class="map-title">Cape Town Pools</div>
+                  <div class="map-style-toggle">
+                    <button class="map-toggle-btn active" data-style="standard">Map</button>
+                    <button class="map-toggle-btn" data-style="satellite">Satellite</button>
+                  </div>
+                </div>
+
+                <!-- Status filter chips -->
+                <div class="map-status-filter" role="group" aria-label="Filter map pins">
+                  <button class="map-filter-chip active" data-map-filter="all" id="mapFilterAll">All <span class="mf-count" id="mapCountAll">0</span></button>
+                  <button class="map-filter-chip open" data-map-filter="open" id="mapFilterOpen"><span class="mf-dot"></span>Open <span class="mf-count" id="mapCountOpen">0</span></button>
+                  <button class="map-filter-chip closed" data-map-filter="closed" id="mapFilterClosed"><span class="mf-dot"></span>Closed <span class="mf-count" id="mapCountClosed">0</span></button>
+                  <button class="map-filter-chip works" data-map-filter="maintenance" id="mapFilterWorks"><span class="mf-dot"></span>Works <span class="mf-count" id="mapCountWorks">0</span></button>
+                </div>
+              </div>
+
+              <!-- Floating map side controls -->
+              <div class="map-side-controls">
+                <button class="map-fab" id="mapZoomInBtn" title="Zoom in" aria-label="Zoom in">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+                <button class="map-fab" id="mapZoomOutBtn" title="Zoom out" aria-label="Zoom out">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/></svg>
+                </button>
+                <button class="map-fab accent" id="mapRecenterBtn" title="Show all pools" aria-label="Show all pools">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
+                </button>
+              </div>
+
+              <!-- Legend -->
+              <div class="map-legend" id="mapLegend" aria-label="Map legend">
+                <span class="lg-item"><span class="lg-pin open"></span>Open</span>
+                <span class="lg-item"><span class="lg-pin closed"></span>Closed</span>
+                <span class="lg-item"><span class="lg-pin works"></span>Major works</span>
+                <span class="lg-item"><span class="lg-pin you"></span>You</span>
+              </div>
+
+              <!-- Leaflet Map Container -->
+              <div id="leafletMap" class="leaflet-map-element"></div>
+
+              <!-- Map Floating Bottom Card -->
+              <div class="map-bottom-card" id="mapBottomCard">
+                <button class="map-card-close-btn" id="mapCardCloseBtn" title="Close">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                </button>
+                <div class="map-card-flex">
+                  <img id="mapCardThumb" src="" alt="Pool thumbnail" class="map-card-thumb" />
+                  <div class="map-card-info">
+                    <h3 class="map-card-name" id="mapCardName">Sea Point Swimming Pool</h3>
+                    <div class="map-card-meta">
+                      <span id="mapCardStatus"></span>
+                      <span id="mapCardCrowd"></span>
+                    </div>
+                    <div id="mapCardDistance" style="font-size: 12px; color: var(--text-muted); font-weight: 600;"></div>
+                  </div>
+                </div>
+                <div class="map-card-buttons">
+                  <button class="map-card-btn-directions" id="mapCardDirectionsBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                    <span>Get Directions</span>
+                  </button>
+                  <button class="map-card-btn-details" id="mapCardDetailsBtn">
+                    <span>View Details</span>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ========================================================
+               4. Favourites Tab Screen View
+               ======================================================== -->
+          <div class="screen-view" id="favouritesScreen">
+            <header class="app-top-bar">
+              <h2 class="section-title">Saved Pools</h2>
+              <span class="section-count-badge" id="favCountBadge">Saved for quick access</span>
+            </header>
+
+            <div class="favourites-tab-content">
+              <div class="pools-list" id="favouritesListContainer">
+                <!-- Dynamically populated -->
+              </div>
+
+              <div class="empty-state" id="emptyFavouritesState" style="display: none;">
+                <div class="empty-icon-wrap">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                  </svg>
+                </div>
+                <h3 class="empty-title">No saved pools yet</h3>
+                <p class="empty-sub">Tap the heart icon on any swimming pool card to save it for quick summer access.</p>
+                <button class="btn-primary-blue" id="explorePoolsBtn" style="height: 44px; max-width: 200px;">Explore Pools</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ========================================================
+               5. Alerts & Maintenance Tab Screen View
+               ======================================================== -->
+          <div class="screen-view" id="alertsScreen">
+            <header class="app-top-bar">
+              <h2 class="section-title">Maintenance & Schedule</h2>
+            </header>
+
+            <div class="alerts-tab-content">
+              
+              <!-- Official Schedule Notice -->
+              <div class="official-notice-card">
+                <span class="notice-department-badge">Recreation & Parks Department</span>
+                <h3 class="notice-headline">Swimming Pools Schedule 2026/27</h3>
+                <p class="notice-intro">
+                  Community swimming pools reopen in phases during the summer season. This approach balances public recreation access with ongoing maintenance of critical municipal infrastructure.
+                </p>
+
+                <div class="phased-schedule-box">
+                  <div class="phased-box-title">Phase 1: September School Holidays (23 Sep - 5 Oct)</div>
+                  <div class="phased-box-text">Open Monday to Sunday from 10:00 to 17:00. Note: Ticket sales close promptly at 16:30.</div>
+                </div>
+
+                <div class="phased-schedule-box" style="border-left-color: var(--accent-aqua-dark);">
+                  <div class="phased-box-title">Phase 2: Off-Peak (6 Oct - 1 Dec 2026)</div>
+                  <div class="phased-box-text">Open Wednesday to Friday 13:00 - 17:00, and Weekends 10:00 - 17:00. Closed Mondays & Tuesdays for filtration servicing.</div>
+                </div>
+
+                <div class="phased-schedule-box" style="border-left-color: var(--status-open-green);">
+                  <div class="phased-box-title">Phase 3: Summer Peak Season (From 1 Dec 2026)</div>
+                  <div class="phased-box-text">Open daily Monday to Sunday from 10:00 to 18:00.</div>
+                </div>
+
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 8px;">
+                  ⚠️ Please note: Re-opening dates may be adjusted due to operational requirements. Email enquiries: <strong>RP.enquiries@capetown.gov.za</strong>
+                </div>
+              </div>
+
+              <!-- Major Works Group -->
+              <div class="maintenance-category-group">
+                <div class="category-group-header major">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                  <span>Pools Undergoing Major Works (Closed)</span>
+                </div>
+                <div id="closedPoolsList">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <!-- Unplanned Works Group -->
+              <div class="maintenance-category-group">
+                <div class="category-group-header unplanned">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  <span>Pools Affected by Unplanned Work (Will Open Later)</span>
+                </div>
+                <div id="unplannedPoolsList">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ========================================================
+               6. Pool Details Screen View (Mockup Screen 3)
+               ======================================================== -->
+          <div class="screen-view pool-details-view" id="detailsScreen">
+            
+            <!-- Hero Photo & Overlay Nav -->
+            <div class="details-hero">
+              <img id="detailsHeroImg" class="details-hero-img" src="" alt="Pool hero image" />
+              
+              <div class="details-nav-overlay">
+                <button class="nav-icon-btn" id="detailsBackBtn" title="Back to pools">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <div class="nav-right-actions">
+                  <button class="nav-icon-btn" id="detailsFavBtn" title="Favorite">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                  </button>
+                  <button class="nav-icon-btn" id="detailsShareBtn" title="Share pool">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Details Content Overlap Body -->
+            <div class="details-content-body">
+              
+              <div class="details-header-info">
+                <div class="details-title-row">
+                  <h2 class="details-pool-title" id="detailsPoolTitle">Sea Point Swimming Pool</h2>
+                  <span class="details-distance-badge" id="detailsDistanceBadge">6 km</span>
+                </div>
+                <div class="details-suburb-address" id="detailsSuburbAddress">Beach Road, Sea Point, Cape Town</div>
+              </div>
+
+              <!-- Stat Boxes Grid (Status & Crowd) -->
+              <div class="details-stat-grid" id="detailsStatGrid">
+                <!-- Dynamically injected -->
+              </div>
+
+              <!-- "Should You Go?" Decision Card -->
+              <div class="decision-card verdict-yes" id="detailsDecisionCard">
+                <!-- Dynamically injected -->
+              </div>
+
+              <!-- Operating Hours Card -->
+              <div class="details-section-card">
+                <div class="section-card-header">
+                  <span class="section-card-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  </span>
+                  <h4 class="section-card-title">Operating Hours</h4>
+                </div>
+                <div class="hours-schedule-list" id="detailsHoursList">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <!-- Weather Now Card -->
+              <div class="details-section-card">
+                <div class="section-card-header">
+                  <span class="section-card-icon" style="color: #f59e0b;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/></svg>
+                  </span>
+                  <h4 class="section-card-title">Weather at the Pool</h4>
+                </div>
+                <div class="weather-metrics-grid" id="detailsWeatherGrid">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <!-- Maintenance Card -->
+              <div class="details-section-card">
+                <div class="section-card-header">
+                  <span class="section-card-icon" style="color: var(--status-busy-orange);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                  </span>
+                  <h4 class="section-card-title">Maintenance Status</h4>
+                </div>
+                <div id="detailsMaintenanceBox">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <!-- Amenities Tags -->
+              <div class="details-section-card">
+                <div class="section-card-header">
+                  <span class="section-card-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  </span>
+                  <h4 class="section-card-title">Facility Amenities</h4>
+                </div>
+                <div class="amenities-tag-cloud" id="detailsAmenitiesCloud">
+                  <!-- Injected via JS -->
+                </div>
+              </div>
+
+              <!-- Admission & Fees -->
+              <div class="details-section-card">
+                <div class="section-card-header">
+                  <span class="section-card-icon" style="color: var(--status-open-green);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                  </span>
+                  <h4 class="section-card-title">Admission Tariff (Recreation & Parks)</h4>
+                </div>
+                <div id="detailsPricing" style="font-size: 13px; font-weight: 600; color: var(--text-secondary);">
+                  Adults R36.00 • Children R20.00 • Pensioners Free
+                </div>
+              </div>
+
+              <!-- Contact Information -->
+              <div class="details-section-card">
+                <div class="contact-row">
+                  <div class="contact-left">
+                    <span class="contact-label">Facility Contact</span>
+                    <span class="contact-number" id="detailsPhone">021 439 9272</span>
+                  </div>
+                  <button class="quick-call-btn" id="detailsCallPoolBtn" title="Call Pool">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Two Large Action Buttons (Directions & View on Map) -->
+              <div class="details-action-buttons">
+                <button class="btn-primary-blue" id="detailsGetDirectionsBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                  <span>Get Directions</span>
+                </button>
+                <button class="btn-secondary-action" id="detailsViewOnMapBtn">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" x2="8" y1="2" y2="18"/><line x1="16" x2="16" y1="6" y2="22"/></svg>
+                  <span>View on Map</span>
+                </button>
+              </div>
+
+              <div class="timestamp-footer" id="detailsLastUpdated">
+                Official Recreation & Parks Data • Last updated: Today, 14:30 SAST
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ========================================================
+               7. Directions & Route Screen View (Mockup Screen 4)
+               ======================================================== -->
+          <div class="directions-screen-view" id="directionsScreen">
+            
+            <div class="directions-header-bar">
+              <button class="directions-back-btn" id="directionsBackBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                <span>Get directions</span>
+              </button>
+            </div>
+
+            <!-- Route Map Canvas -->
+            <div class="directions-map-container">
+              <div id="routeMapElement"></div>
+            </div>
+
+            <!-- Route Bottom Sheet -->
+            <div class="directions-bottom-sheet">
+              <div class="route-pool-summary">
+                <img id="routePoolThumb" class="route-pool-thumb" src="" alt="Destination pool" />
+                <div>
+                  <h3 class="route-pool-name" id="routePoolName">Sea Point Swimming Pool</h3>
+                  <div class="route-pool-address" id="routePoolAddress">Beach Road, Sea Point, Cape Town</div>
+                </div>
+              </div>
+
+              <button class="start-navigation-btn" id="startNavBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                <span>Start navigation</span>
+              </button>
+
+              <div class="route-info-row">
+                <div class="route-info-left">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+                  <span id="routeEtaText">15 min (6.0 km) via Beach Rd</span>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+
+              <div class="route-info-row" id="routeCallPoolBtn" style="cursor: pointer;">
+                <div class="route-info-left">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span>Call pool directly</span>
+                </div>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ========================================================
+               8. Bottom Navigation Bar
+               ======================================================== -->
+          <nav class="app-bottom-nav" id="bottomNav" aria-label="Main Navigation">
+            <button class="nav-item-btn active" data-screen="home">
+              <span class="nav-item-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </span>
+              <span class="nav-item-label">Home</span>
+            </button>
+
+            <button class="nav-item-btn" data-screen="map">
+              <span class="nav-item-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </span>
+              <span class="nav-item-label">Map</span>
+            </button>
+
+            <button class="nav-item-btn" data-screen="favourites">
+              <span class="nav-item-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                </svg>
+                <span class="nav-badge-count" id="favouritesBadge" style="display: none;">0</span>
+              </span>
+              <span class="nav-item-label">Favourites</span>
+            </button>
+
+            <button class="nav-item-btn" data-screen="alerts">
+              <span class="nav-item-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                </svg>
+                <span class="nav-badge-count" id="alertsBadge">5</span>
+              </span>
+              <span class="nav-item-label">Alerts</span>
+            </button>
+          </nav>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="assets/vendor/leaflet.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
